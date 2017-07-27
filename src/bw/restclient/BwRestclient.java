@@ -19,13 +19,43 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.commons.io.IOUtils;
 public class BwRestclient {
     
-    //System.out.println(HttpGet("https://www.w3schools.com/php/welcome.php",new String[][]{{"name","rodrigo"},{"email","rodrigovoperamail.com"}}));
-    //System.out.println(HttpGet("https://www.w3schools.com/php/welcome.php",new String[][]{{"name","rodrigo"}}));
-
+    public static void main(String[] args){
+    //System.out.println(HttpPost("https://www.w3schools.com/php/welcome.php",new String[][]{{"name","rodrigo"},{"email","rodrigovoperamail.com"}}));
+    System.out.println(HttpGet("https://www.w3schools.com/php/welcome_get.php",new String[][]{{"name","rodrigo"},{"email","rodrigovoperamail.com"},{"email","rodrigovoperamail.com"}}));
+    
+    }
+    
     public static String HttpGet(String url, String[][] parameters) {
+        String out=null;
+        try {
+             HttpClient client = new DefaultHttpClient();
+             for(int i = 0; i < parameters.length; i++){
+                if(i==0){
+                    url=url+"?"+parameters[i][0]+"="+parameters[i][1];
+                }else{
+                    url=url+"&"+parameters[i][0]+"="+parameters[i][1];
+                }
+                 
+            }
+  HttpGet request = new HttpGet(url);
+  System.out.println(url);
+  HttpResponse response = client.execute(request);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            out = IOUtils.toString(rd);
+        
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BwRestclient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BwRestclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return out;
+    }
+
+    public static String HttpPost(String url, String[][] parameters) {
         String out=null;
         try {
             HttpClient client = new DefaultHttpClient();
