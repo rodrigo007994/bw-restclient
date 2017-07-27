@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,11 +24,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.commons.io.IOUtils;
 public class BwRestclient {
     
-    public static void main(String[] args){
+    /*public static void main(String[] args){
     //System.out.println(HttpPost("https://www.w3schools.com/php/welcome.php",new String[][]{{"name","rodrigo"},{"email","rodrigovoperamail.com"}}));
-    System.out.println(HttpGet("https://www.w3schools.com/php/welcome_get.php",new String[][]{{"name","rodrigo"},{"email","rodrigovoperamail.com"},{"email","rodrigovoperamail.com"}}));
+    System.out.println(HttpGet("https://www.w3schools.com/php/welcome_get.php",new String[][]{{"name","rodr igo"},{"email","rodrigovoper  amail.com"},{"email","rodrigovop  eramail.com"}}));
     
-    }
+    }*/
     
     public static String HttpGet(String url, String[][] parameters) {
         String out=null;
@@ -35,9 +36,9 @@ public class BwRestclient {
              HttpClient client = new DefaultHttpClient();
              for(int i = 0; i < parameters.length; i++){
                 if(i==0){
-                    url=url+"?"+parameters[i][0]+"="+parameters[i][1];
+                    url=url+"?"+URLEncoder.encode(parameters[i][0], "UTF-8")+"="+URLEncoder.encode(parameters[i][1], "UTF-8");
                 }else{
-                    url=url+"&"+parameters[i][0]+"="+parameters[i][1];
+                    url=url+"&"+URLEncoder.encode(parameters[i][0], "UTF-8")+"="+URLEncoder.encode(parameters[i][1], "UTF-8");
                 }
                  
             }
@@ -62,7 +63,7 @@ public class BwRestclient {
             HttpPost post = new HttpPost(url);
             List nameValuePairs = new ArrayList(parameters.length);
            for(int i = 0; i < parameters.length; i++){
-                nameValuePairs.add(new BasicNameValuePair(parameters[i][0], parameters[i][1]));
+                nameValuePairs.add(new BasicNameValuePair(URLEncoder.encode(parameters[i][0], "UTF-8"), URLEncoder.encode(parameters[i][1], "UTF-8")));
             }
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = client.execute(post);
